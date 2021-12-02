@@ -15,7 +15,7 @@ class LCD:
             self._bus = smbus.SMBus(0)
 
     # set backlight to (R,G,B) (values from 0..255 for each)
-    def setRGB(self, r, g, b):
+    def setRGB(self, r, g, b) -> None:
         self._bus.write_byte_data(self.__DISPLAY_RGB_ADDR, 0, 0)
         self._bus.write_byte_data(self.__DISPLAY_RGB_ADDR, 1, 0)
         self._bus.write_byte_data(self.__DISPLAY_RGB_ADDR, 0x08, 0xaa)
