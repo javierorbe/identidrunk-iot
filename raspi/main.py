@@ -62,7 +62,7 @@ def alcohol_read_event(alcohol_level):
         lcd.setRGB(**config.RED)
         lcd.setText('Exceed alcohol limit')
 
-    requests.post(config.RESULT_RESOURCE, params={
+    requests.post(config.RESULT_RESOURCE, data={
         uid: currentUid,
         alcoholLevel: alcohol_level
     })
