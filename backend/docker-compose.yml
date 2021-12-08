@@ -1,25 +1,22 @@
 version: "3.9"
 
 services:
-  web:
+  server:
     build: .
     ports:
-      - "5000:5000"
-    volumes:
-      - .:/code
-      - logvolume01:/var/log
-    links:
-      - redis
-  redis:
-    image: redis
+      - "8080:80"
   mongo:
     image: mongo
     restart: always
     environment:
+      MONGO_INITDB_DATABASE: identidrunk
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - /init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - dbdata:/data/db
   grafana:
-    image: grafana/grafana:5.1.0
+    image: grafana/grafana:8.2.6
     ports:
       - 3000:3000
     user: '104'
