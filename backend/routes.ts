@@ -2,7 +2,12 @@ import { Router } from 'https://deno.land/x/oak/mod.ts';
 
 export const router = new Router();
 
-// GET request to "/api/helloworld"
+router.get('/api/auth', ctx => {
+  const { request } = ctx;
+  const uid = request.url.searchParams.get('uid');
+  console.log(uid);
+});
+
 router.post('/api/alcohol', async ctx => {
   const { request, response } = ctx;
 
