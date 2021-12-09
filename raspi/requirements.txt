@@ -1,3 +1,4 @@
 RPi.GPIO==0.7.0
 spidev==3.5
 grove.py==0.6
+event-bus==1.0.2

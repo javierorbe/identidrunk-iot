@@ -35,7 +35,7 @@ def rfid_read_event(uid):
     state = State.AUTHORIZE
     lcd.setRGB(77, 182, 172)
     lcd.setText('Checking authorization')
-    response = requests.get(config.AUTH_RESOURCE, params={ uid: 12345 })
+    response = requests.get(config.AUTH_RESOURCE, params={ 'uid': 12345 })
     if response.status_code == requests.codes.ok:
         lcd.setRGB(**config.YELLOW)
         lcd.setText('Blow to the breathalyzer')
@@ -73,8 +73,8 @@ def evaluate_result(uid, alcohol_level):
         lcd.setText('Exceed alcohol limit')
 
     requests.post(config.RESULT_RESOURCE, data={
-        uid: currentUid,
-        alcoholLevel: alcohol_level
+        'uid': currentUid,
+        'alcoholLevel': alcohol_level
     })
     time.sleep(2)
     lcd.setRGB(**config.YELLOW)
