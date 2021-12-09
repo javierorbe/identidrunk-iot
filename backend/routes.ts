@@ -1,15 +1,17 @@
 import { Router } from 'https://deno.land/x/oak/mod.ts';
-import { AlcoholCollection } from './db/collections.ts';
+import { client } from './db/connection.ts';
+import './db/connection.ts';
 
 export const router = new Router();
 
-router.get('/api/auth', async ctx => {
+router.get('/api/auth', async (ctx: any) => {
   const { request } = ctx;
   const uid = request.url.searchParams.get('uid');
-  console.log(uid);
 
-  const data: any = await AlcoholCollection.find().toArray();
-  console.log(data);
+  // const array_result = await client.queryArray('SELECT ID, NAME FROM PEOPLE');
+  // console.log(array_result.rows); // [[1, 'Carlos'], [2, 'John'], ...]
+
+  console.log(uid);
 });
 
 router.post('/api/alcohol', async ctx => {
