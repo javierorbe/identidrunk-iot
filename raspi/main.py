@@ -7,6 +7,7 @@ from event_bus import EventBus
 from raspi import config
 from raspi.lcd import LCD
 from raspi.rfid import RFID
+from raspi.alcohol_sensor import AlcoholSensor
 
 
 class State(Enum):
@@ -20,6 +21,7 @@ bus = EventBus()
 
 lcd = LCD()
 rfid = RFID(bus)
+alcohol_sensor = AlcoholSensor(channel=0)
 
 state = State.AUTHENTICATE
 currentUid = None
@@ -37,7 +39,8 @@ def rfid_read_event(uid):
     if response.status_code == requests.codes.ok:
         lcd.setRGB(**config.YELLOW)
         lcd.setText('Blow to the breathalyzer')
-        currentUid = uid
+        min_alcohol_val = read_min_alcohol_value()
+        evaluate_result(uid, min_alcohol_val)
         state = State.ALCOHOL_LEVEL
     else:
         state = State.ERROR
@@ -49,13 +52,20 @@ def rfid_read_event(uid):
         state = State.AUTHENTICATE
 
 
-@bus.on(config.ALCOHOL_RED_EVENT)
-def alcohol_read_event(alcohol_level):
+def read_min_alcohol_value():
+    min_val = config.ALCOHOL_SENSOR_MIN_VAL
+    t_end = time.time() + 5
+    while time.time() < t_end:
+        val = alcohol_sensor.value
+        if val < min_val:
+            min_val = val
+    return min_val
+
+
+def evaluate_result(uid, alcohol_level):
     global state
-    if state != State.ALCOHOL_LEVEL:
-        return
-    
-    if alcohol_level > config.MAX_ALCOHOL_LEVEL:
+
+    if alcohol_level < config.MAX_ALCOHOL_LEVEL:
         lcd.setRGB(**config.GREEN)
         lcd.setText('Verification completed')
     else:
@@ -75,5 +85,4 @@ def alcohol_read_event(alcohol_level):
 if __name__ == "__main__":
     lcd.setRGB(**config.YELLOW)
     lcd.setText('Pass your RFID card')
-
     rfid.listen()
