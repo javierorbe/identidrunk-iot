@@ -24,10 +24,9 @@ const postgresConfig = {
   },
 };
 
-console.log(config());
-
 const client = new Client(postgresConfig);
 await client.connect();
-await client.end();
+
+console.log('Connected to database ✔️');
 
 export { client };
