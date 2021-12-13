@@ -1,8 +1,8 @@
 services:
-  # server:
-  #   build: .
-  #   ports:
-  #     - "8080:80"
+  server:
+    build: .
+    ports:
+      - "8080:80"
   postgres:
     image: postgres:14-alpine
     restart: always
@@ -15,13 +15,13 @@ services:
     volumes:
       - dbdata:/var/lib/postgresql/data
       - ./db/init-database.sql:/docker-entrypoint-initdb.d/init-database.sql
-  # grafana:
-  #   image: grafana/grafana:8.2.6
-  #   ports:
-  #     - 3000:3000
-  #   user: '104'
-  #   volumes:
-  #     - grafanadata:/var/lib/grafana
+  grafana:
+    image: grafana/grafana:8.2.6
+    ports:
+      - 3000:3000
+    user: '104'
+    volumes:
+      - grafanadata:/var/lib/grafana
 
 volumes:
   dbdata: null
