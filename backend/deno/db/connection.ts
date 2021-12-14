@@ -40,7 +40,7 @@ function tryToConnect(n: number) {
     return;
   }
   console.log(
-    `Trying to connect to database ${DB_HOST} ${DB_DATABASE} ${DB_USER} ${DB_PASSWORD}`
+    `Trying to connect to database`
   );
 
   setTimeout(async () => {
