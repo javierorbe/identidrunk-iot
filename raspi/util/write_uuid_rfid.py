@@ -26,7 +26,7 @@ def write_uuid(id, key_a, block_addr):
     if error:
         raise Exception('Anticoll error.')
 
-    print('Card UID: {}'.format(' '.join(hex(x) for x in uid))))
+    print('Card UID: {}'.format(' '.join(hex(x) for x in uid)))
 
     util.set_tag(uid)
 

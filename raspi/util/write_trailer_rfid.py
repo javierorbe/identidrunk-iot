@@ -26,7 +26,7 @@ def change_key(sector, key_a, new_key_a, new_key_b, auth_bits=(0xFF, 0x07, 0x80)
     if error:
         raise Exception('Anticoll error.')
 
-    print('Card UID: {}'.format(''.join(hex(x) for x in uid))))
+    print('Card UID: {}'.format(''.join(hex(x) for x in uid)))
 
     util.set_tag(uid)
 

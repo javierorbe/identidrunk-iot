@@ -21,7 +21,7 @@ class RFID:
             if not error:
                 (error, uid) = self._rdr.anticoll()
                 if not error:
-                    print('Card UID: {}'.format(' '.join(hex(x) for x in uid))))
+                    print('Card UID: {}'.format(' '.join(hex(x) for x in uid)))
 
                     util.set_tag(uid)
                     util.auth(self._rdr.auth_a, config.RFID_UUID_KEY_A)
