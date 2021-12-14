@@ -3,7 +3,7 @@ import uuid
 from pirc522 import RFID
 
 def main():
-    id = uuid.uuid4()
+    id = uuid.UUID('{ccb08b86-dbd9-4c8a-93ea-a7fa79d22a52}')
     key_a = (0x01, 0x02, 0x03, 0x04, 0x05, 0x06)
     block_addr = 8
     write_uuid(id, key_a, block_addr)
@@ -12,7 +12,7 @@ def main():
 def write_uuid(id, key_a, block_addr):
     rdr = RFID()
     util = rdr.util() 
-    util.debug = true
+    util.debug = True
 
     rdr.wait_for_tag()
 
@@ -26,7 +26,7 @@ def write_uuid(id, key_a, block_addr):
     if error:
         raise Exception('Anticoll error.')
 
-    print('Card UID: {}'.format(''.join(hex(x) for x in uid))))
+    print('Card UID: {}'.format(' '.join(hex(x) for x in uid))))
 
     util.set_tag(uid)
 

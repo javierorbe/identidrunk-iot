@@ -12,6 +12,7 @@ class RFID:
 
 
     def listen(self):
+        util = self._rdr.util()
         while True:
             # Wait for tag
             self._rdr.wait_for_tag()
@@ -20,14 +21,16 @@ class RFID:
             if not error:
                 (error, uid) = self._rdr.anticoll()
                 if not error:
-                    util.set_tag(uid)
-                    util.auth(rdr.auth_a, config.RFID_UUID_KEY_A)
+                    print('Card UID: {}'.format(' '.join(hex(x) for x in uid))))
 
-                    (error, data) = rdr.read(config.RFID_UUID_BLOCK_ADDR)
+                    util.set_tag(uid)
+                    util.auth(self._rdr.auth_a, config.RFID_UUID_KEY_A)
+
+                    (error, data) = self._rdr.read(config.RFID_UUID_BLOCK_ADDR)
 
                     if not error:
                         id = ''.join('{:02x}'.format(x) for x in data)
                         self._bus.emit(config.RFID_READ_EVENT, uuid.UUID(id))
 
                     util.deauth()
-                    rdr.cleanup()
+                    self._rdr.cleanup()

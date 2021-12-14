@@ -12,7 +12,7 @@ def main():
 def change_key(sector, key_a, new_key_a, new_key_b, auth_bits=(0xFF, 0x07, 0x80), user_data=0xFF):
     rdr = RFID()
     util = rdr.util() 
-    util.debug = true
+    util.debug = True
 
     rdr.wait_for_tag()
 
