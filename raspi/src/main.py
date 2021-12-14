@@ -4,10 +4,10 @@ from enum import Enum
 
 from event_bus import EventBus
 
-from raspi import config
-from raspi.lcd import LCD
-from raspi.rfid import RFID
-from raspi.alcohol_sensor import AlcoholSensor
+import config
+from lcd import LCD
+from rfid import RFID
+from alcohol_sensor import AlcoholSensor
 
 
 class State(Enum):

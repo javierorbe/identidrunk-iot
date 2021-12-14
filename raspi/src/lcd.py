@@ -1,6 +1,8 @@
 import time
 import smbus
+
 import RPi.GPIO as GPIO
+
 
 class LCD:
     # this device has two I2C addresses
@@ -14,6 +16,7 @@ class LCD:
         else:
             self._bus = smbus.SMBus(0)
 
+
     # set backlight to (R,G,B) (values from 0..255 for each)
     def setRGB(self, r, g, b) -> None:
         self._bus.write_byte_data(self.__DISPLAY_RGB_ADDR, 0, 0)
@@ -23,9 +26,11 @@ class LCD:
         self._bus.write_byte_data(self.__DISPLAY_RGB_ADDR, 3, g)
         self._bus.write_byte_data(self.__DISPLAY_RGB_ADDR, 2, b)
 
+
     # send command to display (no need for external use)
     def __textCommand(self, cmd):
         self._bus.write_byte_data(self.__DISPLAY_TEXT_ADDR,0x80,cmd)
+
 
     # set display text \n for second line(or auto wrap)
     def setText(self, text):
@@ -47,6 +52,7 @@ class LCD:
                     continue
             count += 1
             self._bus.write_byte_data(self.__DISPLAY_TEXT_ADDR, 0x40, ord(c))
+
 
     #Update the display without erasing the display
     def setText_norefresh(self, text):

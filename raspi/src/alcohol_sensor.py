@@ -7,6 +7,7 @@ class AlcoholSensor:
         self.channel = channel
         self.adc = ADC()
 
+
     @property
     def value(self):
         return self.adc.read(self.channel)
