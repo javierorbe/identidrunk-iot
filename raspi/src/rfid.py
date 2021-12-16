@@ -33,4 +33,3 @@ class RFID:
                         self._bus.emit(config.RFID_READ_EVENT, uuid.UUID(id))
 
                     util.deauth()
-                    self._rdr.cleanup()

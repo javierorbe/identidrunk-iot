@@ -24,7 +24,6 @@ rfid = RFID(bus)
 alcohol_sensor = AlcoholSensor(channel=0)
 
 state = State.AUTHENTICATE
-currentUid = None
 
 @bus.on(config.RFID_READ_EVENT)
 def rfid_read_event(uid):
@@ -35,13 +34,19 @@ def rfid_read_event(uid):
     state = State.AUTHORIZE
     lcd.setRGB(77, 182, 172)
     lcd.setText('Checking authorization')
-    response = requests.get(config.AUTH_RESOURCE, params={ 'uid': 12345 })
+    response = requests.get(config.AUTH_RESOURCE, params={ 'uid': str(uid) })
     if response.status_code == requests.codes.ok:
         lcd.setRGB(**config.YELLOW)
         lcd.setText('Blow to the breathalyzer')
+
+        state = State.ALCOHOL_LEVEL
         min_alcohol_val = read_min_alcohol_value()
         evaluate_result(uid, min_alcohol_val)
-        state = State.ALCOHOL_LEVEL
+
+        time.sleep(2)
+        lcd.setRGB(**config.YELLOW)
+        lcd.setText('Pass your RFID card')
+        state = State.AUTHENTICATE
     else:
         state = State.ERROR
         lcd.setRGB(**config.RED)
@@ -73,13 +78,9 @@ def evaluate_result(uid, alcohol_level):
         lcd.setText('Exceed alcohol limit')
 
     requests.post(config.RESULT_RESOURCE, data={
-        'uid': currentUid,
+        'uid': str(uid),
         'alcoholLevel': alcohol_level
     })
-    time.sleep(2)
-    lcd.setRGB(**config.YELLOW)
-    lcd.setText('Pass your RFID card')
-    state = State.AUTHENTICATE
 
 
 if __name__ == "__main__":
