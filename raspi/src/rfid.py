@@ -26,6 +26,7 @@ class RFID:
                     util.set_tag(uid)
                     util.auth(self._rdr.auth_a, config.RFID_UUID_KEY_A)
 
+                    util.read_out(config.RFID_UUID_BLOCK_ADDR)
                     (error, data) = self._rdr.read(config.RFID_UUID_BLOCK_ADDR)
 
                     if not error:

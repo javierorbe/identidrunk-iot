@@ -35,13 +35,14 @@ def rfid_read_event(uid):
     lcd.setRGB(77, 182, 172)
     lcd.setText('Checking authorization')
     response = requests.get(config.AUTH_RESOURCE, params={ 'uid': str(uid) })
+    time.sleep(0.5)
     if response.status_code == requests.codes.ok:
         lcd.setRGB(**config.YELLOW)
         lcd.setText('Blow to the breathalyzer')
 
         state = State.ALCOHOL_LEVEL
-        min_alcohol_val = read_min_alcohol_value()
-        evaluate_result(uid, min_alcohol_val)
+        alcohol_val = read_max_alcohol_value()
+        evaluate_result(uid, alcohol_val)
 
         time.sleep(2)
         lcd.setRGB(**config.YELLOW)
@@ -57,7 +58,7 @@ def rfid_read_event(uid):
         state = State.AUTHENTICATE
 
 
-def read_min_alcohol_value():
+def read_max_alcohol_value():
     max_val = config.ALCOHOL_SENSOR_MAX_VAL
     t_end = time.time() + 5
     while time.time() < t_end:
@@ -70,7 +71,7 @@ def read_min_alcohol_value():
 def evaluate_result(uid, alcohol_level):
     global state
 
-    if alcohol_level > config.MAX_ALCOHOL_LEVEL:
+    if alcohol_level <= config.MAX_ALCOHOL_LEVEL:
         lcd.setRGB(**config.GREEN)
         lcd.setText('Verification completed')
     else:
