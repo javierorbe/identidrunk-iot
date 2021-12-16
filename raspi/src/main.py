@@ -58,19 +58,19 @@ def rfid_read_event(uid):
 
 
 def read_min_alcohol_value():
-    min_val = config.ALCOHOL_SENSOR_MIN_VAL
+    max_val = config.ALCOHOL_SENSOR_MAX_VAL
     t_end = time.time() + 5
     while time.time() < t_end:
         val = alcohol_sensor.value
-        if val < min_val:
-            min_val = val
-    return min_val
+        if val > max_val:
+            max_val = val
+    return max_val
 
 
 def evaluate_result(uid, alcohol_level):
     global state
 
-    if alcohol_level < config.MAX_ALCOHOL_LEVEL:
+    if alcohol_level > config.MAX_ALCOHOL_LEVEL:
         lcd.setRGB(**config.GREEN)
         lcd.setText('Verification completed')
     else:
