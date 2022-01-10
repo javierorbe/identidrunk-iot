@@ -78,7 +78,7 @@ def evaluate_result(uid, alcohol_level):
         lcd.setRGB(**config.RED)
         lcd.setText('Exceed alcohol limit')
 
-    requests.post(config.RESULT_RESOURCE, data={
+    requests.post(config.RESULT_RESOURCE, post={
         'uid': str(uid),
         'alcoholLevel': alcohol_level
     })
